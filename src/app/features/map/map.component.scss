@@ -27,10 +27,10 @@
   }
 }
 
-// Loading indicator
+// Loading indicator — positioned below the search bar (top: 16px + ~42px input + 8px gap)
 .loading-indicator {
   position: absolute;
-  top: $space-lg;
+  top: 72px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;

@@ -106,6 +106,7 @@ export class MapComponent implements OnDestroy {
       zoom: 4,
       attributionControl: {},
       dragRotate: false,
+      renderWorldCopies: false,
     });
 
     this.map.on('click', (e) => {

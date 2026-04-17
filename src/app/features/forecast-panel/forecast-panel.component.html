@@ -109,8 +109,23 @@
               }
             </div>
 
+            <!-- Left edge fade — visible when hours are hidden on the left -->
+            @if (dragOffset() < 0) {
+              <div class="edge-fade edge-fade--left" aria-hidden="true"></div>
+            }
+
             <!-- Right edge fade hint -->
             <div class="edge-fade" aria-hidden="true"></div>
+
+            <!-- Drag affordance pill — fades out automatically -->
+            <div class="drag-hint-pill" aria-hidden="true">
+              <svg width="28" height="10" viewBox="0 0 28 10" fill="none">
+                <polyline points="6,7 2,5 6,3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="2" y1="5" x2="26" y2="5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <polyline points="22,3 26,5 22,7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Drag to explore</span>
+            </div>
           </div>
 
         </div>

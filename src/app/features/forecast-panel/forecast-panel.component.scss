@@ -300,13 +300,48 @@
   &.has-rain { background: $color-rain; }
 }
 
-// Right-edge fade to hint draggability
+// Edge fades to hint draggability
 .edge-fade {
   position: absolute;
-  right: 0;
   top: 0;
+  right: 0;
   height: 100%;
   width: 36px;
   background: linear-gradient(to right, transparent, $color-panel);
   pointer-events: none;
+
+  &--left {
+    right: auto;
+    left: 0;
+    background: linear-gradient(to left, transparent, $color-panel);
+  }
+}
+
+// Drag affordance pill
+.drag-hint-pill {
+  position: absolute;
+  bottom: $space-sm;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba($color-earth-dark, 0.72);
+  color: rgba(255, 255, 255, 0.92);
+  padding: 3px 10px 3px 8px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  white-space: nowrap;
+  animation: drag-hint-life 2.8s ease-out forwards;
+  z-index: 3;
+}
+
+@keyframes drag-hint-life {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(3px); }
+  18%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  72%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(0); }
 }
