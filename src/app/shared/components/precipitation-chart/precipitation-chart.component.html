@@ -1,0 +1,45 @@
+<div class="chart-container">
+  <h3 class="chart-title">Precipitation</h3>
+  <svg [attr.viewBox]="viewBox" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Precipitation chart">
+    <title>Daily precipitation chart</title>
+
+    <!-- Baseline -->
+    <line
+      [attr.x1]="padding" [attr.y1]="height - padding"
+      [attr.x2]="width - padding" [attr.y2]="height - padding"
+      stroke="#e0ddd5" stroke-width="0.5"
+    />
+
+    <!-- Max label -->
+    @if (maxLabel()) {
+      <text [attr.x]="padding - 8" [attr.y]="padding + 4" text-anchor="end" class="axis-label">
+        {{ maxLabel() }}
+      </text>
+    }
+
+    <!-- Bars -->
+    @for (bar of bars(); track bar.label; let i = $index) {
+      <g class="bar-group" (click)="onBarClick(bar.dayIndex)">
+        <rect
+          [attr.x]="bar.x" [attr.y]="bar.y"
+          [attr.width]="bar.width" [attr.height]="bar.height"
+          [attr.fill]="i === highlightDayIndex() ? '#4a6b4e' : '#5b8fad'"
+          [attr.fill-opacity]="i === highlightDayIndex() ? 1 : bar.opacity"
+          rx="4"
+        >
+          <title>{{ bar.label }}: {{ bar.value }} mm</title>
+        </rect>
+        <!-- Value label on top -->
+        @if (bar.value > 0) {
+          <text [attr.x]="bar.x + bar.width / 2" [attr.y]="bar.y - 6" text-anchor="middle" class="bar-value">
+            {{ bar.value }} mm
+          </text>
+        }
+        <!-- Day label -->
+        <text [attr.x]="bar.x + bar.width / 2" [attr.y]="height - padding + 18" text-anchor="middle" class="axis-label">
+          {{ bar.label }}
+        </text>
+      </g>
+    }
+  </svg>
+</div>

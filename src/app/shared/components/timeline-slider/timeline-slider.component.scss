@@ -1,0 +1,88 @@
+@use '../../../../styles/variables' as *;
+
+.timeline-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.current-label {
+  font-family: $font-primary;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: $color-earth;
+  text-align: center;
+}
+
+.slider-track {
+  position: relative;
+  padding-bottom: 18px;
+}
+
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(
+    to right,
+    $color-warm 0%,
+    $color-sage 30%,
+    $color-sky 50%,
+    $color-sage 70%,
+    $color-warm 100%
+  );
+  outline: none;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: $color-sage-dark;
+    border: 3px solid white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    cursor: grab;
+    transition: transform 0.15s;
+
+    &:active {
+      cursor: grabbing;
+      transform: scale(1.2);
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: $color-sage-dark;
+    border: 3px solid white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+      transform: scale(1.2);
+    }
+  }
+}
+
+.day-markers {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 14px;
+}
+
+.day-marker {
+  position: absolute;
+  transform: translateX(-50%);
+  font-family: $font-primary;
+  font-size: 0.6rem;
+  color: $color-earth-light;
+}

@@ -1,0 +1,201 @@
+@switch (type()) {
+  <!-- Clear sky: sun (day) or moon (night) -->
+  @case ('clear') {
+    @if (isNight()) {
+      <svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 64 64" role="img" [attr.aria-label]="description()">
+        <title>{{ description() }}</title>
+        <!-- Crescent: large CCW arc (outer belly, circle-left) + small CW arc (inner edge, circle-right) -->
+        <path class="moon-glow"
+          d="M46 11 A22 22 0 1 0 46 53 A22 22 0 0 1 46 11 Z"
+          fill="#5a7eb5"/>
+        <circle cx="56" cy="14" r="2.5" fill="#8aaed5"/>
+        <circle cx="60" cy="30" r="1.6" fill="#8aaed5" opacity="0.8"/>
+        <circle cx="56" cy="48" r="1.8" fill="#8aaed5" opacity="0.7"/>
+      </svg>
+    } @else {
+      <svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 64 64" role="img" [attr.aria-label]="description()">
+        <title>{{ description() }}</title>
+        <g class="sun-rays" transform-origin="32 32">
+          @for (i of [0,1,2,3,4,5,6,7]; track i) {
+            <line
+              x1="32" y1="6" x2="32" y2="14"
+              stroke="#d4956a" stroke-width="2.5" stroke-linecap="round"
+              [attr.transform]="'rotate(' + (i * 45) + ' 32 32)'"
+            />
+          }
+        </g>
+        <circle cx="32" cy="32" r="12" fill="#d4956a" />
+        <circle cx="32" cy="32" r="9" fill="#e8b06a" />
+      </svg>
+    }
+  }
+
+  <!-- Partly cloudy: sun + cloud (day) or moon + cloud (night) -->
+  @case ('partly-cloudy') {
+    @if (isNight()) {
+      <svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 64 64" role="img" [attr.aria-label]="description()">
+        <title>{{ description() }}</title>
+        <!-- Small crescent: same two-arc technique, R=10 -->
+        <path class="moon-glow"
+          d="M22 11 A10 10 0 1 0 22 29 A10 10 0 0 1 22 11 Z"
+          fill="#5a7eb5"/>
+        <circle cx="36" cy="10" r="1.5" fill="#9ab8d8" opacity="0.9"/>
+        <g class="cloud-drift">
+          <path d="M20 38c-4 0-7-3-7-7s3-7 7-7c1-4 4-7 8-7s7 3 8 7c3 0 6 3 6 7s-3 7-6 7z"
+                fill="#e0ddd5" stroke="#c8c4ba" stroke-width="0.5" transform="translate(10, 6)" />
+        </g>
+      </svg>
+    } @else {
+      <svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 64 64" role="img" [attr.aria-label]="description()">
+        <title>{{ description() }}</title>
+        <g class="sun-rays" transform-origin="24 22">
+          @for (i of [0,1,2,3,4,5,6,7]; track i) {
+            <line
+              x1="24" y1="8" x2="24" y2="13"
+              stroke="#d4956a" stroke-width="2" stroke-linecap="round"
+              [attr.transform]="'rotate(' + (i * 45) + ' 24 22)'"
+            />
+          }
+        </g>
+        <circle cx="24" cy="22" r="9" fill="#d4956a" />
+        <circle cx="24" cy="22" r="7" fill="#e8b06a" />
+        <g class="cloud-drift">
+          <path d="M20 38c-4 0-7-3-7-7s3-7 7-7c1-4 4-7 8-7s7 3 8 7c3 0 6 3 6 7s-3 7-6 7z"
+                fill="#e0ddd5" stroke="#c8c4ba" stroke-width="0.5" transform="translate(10, 6)" />
+        </g>
+      </svg>
+    }
+  }
+
+  <!-- Overcast: two overlapping clouds -->
+  @case ('overcast') {
+    <svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 64 64" role="img" [attr.aria-label]="description()">
+      <title>{{ description() }}</title>
+      <g class="cloud-drift-slow">
+        <path d="M14 36c-4 0-7-3-7-7s3-7 7-7c1-4 4-7 8-7s7 3 8 7c3 0 6 3 6 7s-3 7-6 7z"
+              fill="#d5d0c8" stroke="#c0bbb0" stroke-width="0.5" />
+      </g>
+      <g class="cloud-drift">
+        <path d="M22 44c-5 0-8-3.5-8-8s3-8 8-8c1-5 5-8 10-8s8 3.5 9 8c4 0 7 3.5 7 8s-3 8-7 8z"
+              fill="#e0ddd5" stroke="#c8c4ba" stroke-width="0.5" />
+      </g>
+    </svg>
+  }
+
+  <!-- Fog: wavy horizontal lines -->
+  @case ('fog') {
+    <svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 64 64" role="img" [attr.aria-label]="description()">
+      <title>{{ description() }}</title>
+      <path class="fog-line fog-line-1" d="M8 24 Q16 20 24 24 Q32 28 40 24 Q48 20 56 24" fill="none" stroke="#a89e90" stroke-width="2.5" stroke-linecap="round" />
+      <path class="fog-line fog-line-2" d="M8 34 Q16 30 24 34 Q32 38 40 34 Q48 30 56 34" fill="none" stroke="#b5ab9d" stroke-width="2.5" stroke-linecap="round" />
+      <path class="fog-line fog-line-3" d="M8 44 Q16 40 24 44 Q32 48 40 44 Q48 40 56 44" fill="none" stroke="#c2b8aa" stroke-width="2.5" stroke-linecap="round" />
+    </svg>
+  }
+
+  <!-- Drizzle: cloud + small falling dots -->
+  @case ('drizzle') {
+    <svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 64 64" role="img" [attr.aria-label]="description()">
+      <title>{{ description() }}</title>
+      <path d="M16 30c-4 0-7-3-7-7s3-7 7-7c1-4 4-7 8-7s7 3 8 7c3 0 6 3 6 7s-3 7-6 7z"
+            fill="#d5d0c8" stroke="#c0bbb0" stroke-width="0.5" transform="translate(6, 2)" />
+      <circle class="drop drop-1" cx="22" cy="40" r="1.5" fill="#7ba7bc" />
+      <circle class="drop drop-2" cx="32" cy="38" r="1.5" fill="#7ba7bc" />
+      <circle class="drop drop-3" cx="42" cy="41" r="1.5" fill="#7ba7bc" />
+      @if (severity() !== 'light') {
+        <circle class="drop drop-4" cx="27" cy="44" r="1.5" fill="#7ba7bc" />
+        <circle class="drop drop-5" cx="37" cy="43" r="1.5" fill="#7ba7bc" />
+      }
+    </svg>
+  }
+
+  <!-- Rain: cloud + angled falling lines -->
+  @case ('rain') {
+    <svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 64 64" role="img" [attr.aria-label]="description()">
+      <title>{{ description() }}</title>
+      <path d="M16 30c-4 0-7-3-7-7s3-7 7-7c1-4 4-7 8-7s7 3 8 7c3 0 6 3 6 7s-3 7-6 7z"
+            fill="#c8c4ba" stroke="#b0aca2" stroke-width="0.5" transform="translate(6, 2)" />
+      <line class="rain-line rain-line-1" x1="20" y1="36" x2="17" y2="48" stroke="#5b8fad" stroke-width="2" stroke-linecap="round" />
+      <line class="rain-line rain-line-2" x1="30" y1="36" x2="27" y2="48" stroke="#5b8fad" stroke-width="2" stroke-linecap="round" />
+      <line class="rain-line rain-line-3" x1="40" y1="36" x2="37" y2="48" stroke="#5b8fad" stroke-width="2" stroke-linecap="round" />
+      @if (severity() === 'heavy') {
+        <line class="rain-line rain-line-4" x1="25" y1="38" x2="22" y2="50" stroke="#5b8fad" stroke-width="2" stroke-linecap="round" />
+        <line class="rain-line rain-line-5" x1="35" y1="38" x2="32" y2="50" stroke="#5b8fad" stroke-width="2" stroke-linecap="round" />
+      }
+    </svg>
+  }
+
+  <!-- Freezing rain: rain + ice crystals -->
+  @case ('freezing-rain') {
+    <svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 64 64" role="img" [attr.aria-label]="description()">
+      <title>{{ description() }}</title>
+      <path d="M16 30c-4 0-7-3-7-7s3-7 7-7c1-4 4-7 8-7s7 3 8 7c3 0 6 3 6 7s-3 7-6 7z"
+            fill="#c8d4dc" stroke="#aab8c2" stroke-width="0.5" transform="translate(6, 2)" />
+      <line class="rain-line rain-line-1" x1="20" y1="36" x2="17" y2="46" stroke="#8ab0c4" stroke-width="1.5" stroke-linecap="round" />
+      <line class="rain-line rain-line-2" x1="32" y1="36" x2="29" y2="46" stroke="#8ab0c4" stroke-width="1.5" stroke-linecap="round" />
+      <line class="rain-line rain-line-3" x1="44" y1="36" x2="41" y2="46" stroke="#8ab0c4" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Ice crystals -->
+      <g class="crystal crystal-1" transform="translate(18, 50)">
+        <line x1="-3" y1="0" x2="3" y2="0" stroke="#b5d4e0" stroke-width="1.5" />
+        <line x1="0" y1="-3" x2="0" y2="3" stroke="#b5d4e0" stroke-width="1.5" />
+        <line x1="-2" y1="-2" x2="2" y2="2" stroke="#b5d4e0" stroke-width="1" />
+        <line x1="2" y1="-2" x2="-2" y2="2" stroke="#b5d4e0" stroke-width="1" />
+      </g>
+      <g class="crystal crystal-2" transform="translate(38, 52)">
+        <line x1="-3" y1="0" x2="3" y2="0" stroke="#b5d4e0" stroke-width="1.5" />
+        <line x1="0" y1="-3" x2="0" y2="3" stroke="#b5d4e0" stroke-width="1.5" />
+        <line x1="-2" y1="-2" x2="2" y2="2" stroke="#b5d4e0" stroke-width="1" />
+        <line x1="2" y1="-2" x2="-2" y2="2" stroke="#b5d4e0" stroke-width="1" />
+      </g>
+    </svg>
+  }
+
+  <!-- Snow: cloud + drifting snowflakes -->
+  @case ('snow') {
+    <svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 64 64" role="img" [attr.aria-label]="description()">
+      <title>{{ description() }}</title>
+      <path d="M16 30c-4 0-7-3-7-7s3-7 7-7c1-4 4-7 8-7s7 3 8 7c3 0 6 3 6 7s-3 7-6 7z"
+            fill="#dce4e8" stroke="#c0ccd2" stroke-width="0.5" transform="translate(6, 2)" />
+      <g class="snowflake snowflake-1" transform="translate(20, 40)">
+        <line x1="-4" y1="0" x2="4" y2="0" stroke="#a0c4d0" stroke-width="1.5" />
+        <line x1="0" y1="-4" x2="0" y2="4" stroke="#a0c4d0" stroke-width="1.5" />
+        <line x1="-3" y1="-3" x2="3" y2="3" stroke="#a0c4d0" stroke-width="1" />
+        <line x1="3" y1="-3" x2="-3" y2="3" stroke="#a0c4d0" stroke-width="1" />
+      </g>
+      <g class="snowflake snowflake-2" transform="translate(34, 42)">
+        <line x1="-3" y1="0" x2="3" y2="0" stroke="#b5d4e0" stroke-width="1.5" />
+        <line x1="0" y1="-3" x2="0" y2="3" stroke="#b5d4e0" stroke-width="1.5" />
+        <line x1="-2" y1="-2" x2="2" y2="2" stroke="#b5d4e0" stroke-width="1" />
+        <line x1="2" y1="-2" x2="-2" y2="2" stroke="#b5d4e0" stroke-width="1" />
+      </g>
+      <g class="snowflake snowflake-3" transform="translate(46, 38)">
+        <line x1="-3" y1="0" x2="3" y2="0" stroke="#c8d8e0" stroke-width="1.5" />
+        <line x1="0" y1="-3" x2="0" y2="3" stroke="#c8d8e0" stroke-width="1.5" />
+      </g>
+      @if (severity() !== 'light') {
+        <g class="snowflake snowflake-4" transform="translate(27, 50)">
+          <line x1="-3" y1="0" x2="3" y2="0" stroke="#b5d4e0" stroke-width="1.5" />
+          <line x1="0" y1="-3" x2="0" y2="3" stroke="#b5d4e0" stroke-width="1.5" />
+        </g>
+        <g class="snowflake snowflake-5" transform="translate(40, 52)">
+          <line x1="-3" y1="0" x2="3" y2="0" stroke="#c8d8e0" stroke-width="1.5" />
+          <line x1="0" y1="-3" x2="0" y2="3" stroke="#c8d8e0" stroke-width="1.5" />
+        </g>
+      }
+    </svg>
+  }
+
+  <!-- Thunderstorm: dark cloud + lightning + rain -->
+  @case ('thunderstorm') {
+    <svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 64 64" role="img" [attr.aria-label]="description()">
+      <title>{{ description() }}</title>
+      <path d="M16 28c-4 0-7-3-7-7s3-7 7-7c1-4 4-7 8-7s7 3 8 7c3 0 6 3 6 7s-3 7-6 7z"
+            fill="#6a6a7a" stroke="#5a5a6a" stroke-width="0.5" transform="translate(6, 2)" />
+      <!-- Lightning bolt -->
+      <polygon class="lightning" points="30,28 26,38 32,38 28,52 38,36 32,36 36,28" fill="#e8c84a" />
+      <!-- Rain behind -->
+      <line class="rain-line rain-line-1" x1="18" y1="34" x2="15" y2="44" stroke="#5b8fad" stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
+      <line class="rain-line rain-line-2" x1="44" y1="34" x2="41" y2="44" stroke="#5b8fad" stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
+      <line class="rain-line rain-line-3" x1="48" y1="36" x2="45" y2="46" stroke="#5b8fad" stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
+    </svg>
+  }
+}

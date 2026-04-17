@@ -1,0 +1,37 @@
+:host {
+  display: block;
+}
+
+.chart-container {
+  padding: 0;
+}
+
+.chart-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #6b5340;
+  margin-bottom: 6px;
+}
+
+svg {
+  width: 100%;
+  height: auto;
+}
+
+.clickable-chart {
+  cursor: crosshair;
+}
+
+.axis-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  fill: #a89279;
+}
+
+.highlight-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  fill: #4a6b4e;
+}

@@ -1,0 +1,30 @@
+<div class="comfort-grid-page">
+  <header class="page-header">
+    <div>
+      <h1>Comfort Score</h1>
+      <p class="subtitle">Where does it feel the best right now?</p>
+    </div>
+  </header>
+
+  <div class="search-area">
+    <app-search-bar [inline]="true" (locationSelected)="addCity($event)" />
+  </div>
+
+  @if (isInitialLoading()) {
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <span>Loading world cities&hellip;</span>
+    </div>
+  }
+
+  <div class="card-grid">
+    @for (city of cities(); track city.location.name; let i = $index) {
+      <app-comfort-card
+        [city]="city"
+        [rank]="i + 1"
+        [highlighted]="isHighlighted(city)"
+        (removed)="removeCity(city.location)"
+      />
+    }
+  </div>
+</div>

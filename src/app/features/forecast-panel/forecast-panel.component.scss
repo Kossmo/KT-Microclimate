@@ -1,0 +1,312 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.forecast-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 380px;
+  height: 100%;
+  background: $color-panel;
+  box-shadow: $shadow-panel;
+  overflow-y: auto;
+  z-index: 20;
+  animation: slide-in-right 0.35s ease-out;
+
+  @include mobile {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 65vh;
+    border-radius: $radius-lg $radius-lg 0 0;
+    animation: slide-in-bottom 0.35s ease-out;
+  }
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes slide-in-bottom {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.forecast-panel::-webkit-scrollbar { width: 4px; }
+.forecast-panel::-webkit-scrollbar-thumb {
+  background: $color-earth-light;
+  border-radius: 2px;
+}
+
+// --- Header ---
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: $space-lg;
+  padding-bottom: $space-md;
+  position: sticky;
+  top: 0;
+  background: $color-panel;
+  z-index: 1;
+}
+
+.header-info h2 {
+  font-family: $font-display;
+  font-size: 1.35rem;
+  color: $color-earth-dark;
+  margin-bottom: 2px;
+}
+
+.coordinates {
+  font-size: 0.75rem;
+  color: $color-earth-light;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+}
+
+.compare-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: $color-sage;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: $radius-sm;
+  font-family: $font-primary;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover { background: $color-sage-dark; }
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.75rem;
+  color: $color-earth-light;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s;
+
+  &:hover { color: $color-earth-dark; }
+}
+
+// --- Current weather ---
+
+.current-weather {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  padding: 0 $space-lg $space-lg;
+}
+
+.current-details { display: flex; flex-direction: column; }
+
+.current-temp {
+  font-family: $font-display;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: $color-earth-dark;
+  line-height: 1;
+}
+
+.current-desc {
+  font-size: 0.875rem;
+  color: $color-earth;
+  margin-top: 2px;
+}
+
+// --- 7-day list ---
+
+.daily-forecast {
+  padding: 0 $space-md $space-lg;
+
+  h3 {
+    font-family: $font-display;
+    font-size: 1rem;
+    color: $color-earth;
+    margin-bottom: $space-sm;
+    padding: 0 $space-sm;
+  }
+}
+
+// --- Hourly expand ---
+
+.hourly-expand {
+  margin: 2px $space-sm $space-sm;
+  border-radius: $radius-sm;
+  border: 1px solid rgba(122, 158, 126, 0.15);
+  overflow: hidden;
+  animation: expand-in 0.2s ease-out;
+}
+
+@keyframes expand-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// --- Mode tabs ---
+
+.mode-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(122, 158, 126, 0.15);
+}
+
+.mode-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 7px 4px;
+  background: none;
+  border: none;
+  font-family: $font-primary;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: $color-earth-light;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+
+  svg { opacity: 0.6; transition: opacity 0.15s; flex-shrink: 0; }
+
+  &:hover {
+    color: $color-earth;
+    background: rgba(0, 0, 0, 0.03);
+    svg { opacity: 0.8; }
+  }
+
+  &.active {
+    color: $color-sage-dark;
+    background: rgba(122, 158, 126, 0.08);
+    svg { opacity: 1; }
+  }
+
+  & + & { border-left: 1px solid rgba(122, 158, 126, 0.15); }
+}
+
+// --- Draggable cards strip ---
+
+.cards-viewport {
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  position: relative;
+
+  &.is-dragging {
+    cursor: grabbing;
+  }
+}
+
+.cards-strip {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.hour-card {
+  flex: 0 0 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 6px 10px;
+  border-right: 1px solid rgba(122, 158, 126, 0.1);
+  background: $color-panel;
+
+  &.night {
+    background: rgba(100, 120, 160, 0.07);
+  }
+}
+
+.card-time {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $color-earth-light;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.card-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  width: 100%;
+}
+
+.card-value {
+  font-family: $font-display;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: $color-earth-dark;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+
+  &.wind { color: $color-earth; }
+  &.rain { color: $color-rain; }
+}
+
+.card-unit {
+  font-size: 0.65rem;
+  color: $color-earth-light;
+  font-weight: 500;
+  margin-top: -2px;
+}
+
+// Wind direction arrow
+.wind-dir-arrow {
+  color: $color-earth;
+  opacity: 0.8;
+}
+
+// Rain bar
+.rain-visual {
+  padding: 2px 10px 0;
+}
+
+.rain-bar-track {
+  width: 100%;
+  height: 28px;
+  background: rgba($color-earth-light, 0.12);
+  border-radius: 2px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.rain-bar-fill {
+  width: 100%;
+  background: rgba($color-earth-light, 0.2);
+  border-radius: 2px 2px 0 0;
+  min-height: 0;
+
+  &.has-rain { background: $color-rain; }
+}
+
+// Right-edge fade to hint draggability
+.edge-fade {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 36px;
+  background: linear-gradient(to right, transparent, $color-panel);
+  pointer-events: none;
+}

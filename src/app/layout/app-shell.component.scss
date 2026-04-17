@@ -1,0 +1,74 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.app-nav {
+  position: fixed;
+  top: $space-md;
+  left: $space-md;
+  z-index: 30;
+  display: flex;
+  gap: 2px;
+  background: $color-panel;
+  border-radius: $radius-md;
+  box-shadow: $shadow-panel;
+  padding: 3px;
+
+  @include mobile {
+    top: auto;
+    bottom: $space-md;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: $radius-sm;
+    text-decoration: none;
+    font-family: $font-primary;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: $color-earth-light;
+    transition: background 0.2s, color 0.2s;
+    position: relative;
+
+    &:hover {
+      background: $color-surface-alt;
+      color: $color-earth;
+    }
+
+    &.active {
+      background: $color-sage;
+      color: white;
+    }
+
+    span:first-of-type {
+      @include mobile {
+        display: none;
+      }
+    }
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: $color-warm;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 600;
+}

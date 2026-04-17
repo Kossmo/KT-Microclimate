@@ -1,0 +1,87 @@
+<article class="city-card">
+  @if (city().isLoading) {
+    <div class="card-loading">
+      <div class="loading-spinner"></div>
+      <span>Loading&hellip;</span>
+    </div>
+  } @else if (city().error) {
+    <div class="card-error">
+      <span>{{ city().error }}</span>
+      <button class="remove-btn" (click)="removed.emit()" aria-label="Remove city">
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+          <line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  } @else if (city().forecast; as fc) {
+
+    <div class="card-top">
+      <div class="city-name-row">
+        <div class="city-info">
+          <h3 class="city-name">{{ locationLabel() }}</h3>
+          @if (city().location.country) {
+            <span class="city-sub">{{ city().location.country }}</span>
+          }
+        </div>
+        <button class="remove-btn" (click)="removed.emit()" aria-label="Remove city">
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+            <line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      @if (currentWeather(); as cw) {
+        <div class="current-weather">
+          <app-weather-icon [type]="cw.wmo.icon" [severity]="cw.wmo.severity" [size]="56" />
+          <div class="temp-block">
+            <span class="big-temp">{{ cw.tempMax | number:'1.0-0' }}°</span>
+            <span class="weather-desc">{{ cw.wmo.description }}</span>
+          </div>
+          <div class="quick-stats">
+            <div class="qs-item">
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" class="qs-icon">
+                <line x1="7" y1="2" x2="7" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="7" cy="11" r="2" fill="currentColor"/>
+              </svg>
+              <span class="qs-value">{{ cw.tempMin | number:'1.0-0' }}–{{ cw.tempMax | number:'1.0-0' }}<span class="qs-unit">°</span></span>
+            </div>
+            <div class="qs-item">
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" class="qs-icon">
+                <path d="M1 5 Q5 3.5 9 5 Q11 5.5 11.5 4.5 Q12 3.5 11 3" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                <path d="M1 8 Q5 6.5 10 8 Q11.5 8.5 12 7.5" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+              </svg>
+              <span class="qs-value">{{ cw.windSpeedMax | number:'1.0-0' }}<span class="qs-unit"> km/h</span></span>
+            </div>
+            <div class="qs-item">
+              <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true" class="qs-icon">
+                <path d="M6 1 Q8.5 5 8.5 8 A2.5 2.5 0 0 1 3.5 8 Q3.5 5 6 1Z" fill="currentColor" opacity="0.75"/>
+              </svg>
+              <span class="qs-value">{{ cw.precipitation | number:'1.0-1' }}<span class="qs-unit"> mm</span></span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="card-chart">
+      <app-temperature-chart
+        [temperatures]="fc.hourlyTemperatures"
+        [times]="fc.hourlyTimes"
+      />
+    </div>
+
+    <div class="card-days">
+      @for (day of daysSummary(); track day.date) {
+        <div class="day-pill">
+          <span class="day-label">{{ day.dayLabel }}</span>
+          <app-weather-icon [type]="day.wmo.icon" [severity]="day.wmo.severity" [size]="22" />
+          <span class="day-high">{{ day.tempMax | number:'1.0-0' }}°</span>
+          <span class="day-low">{{ day.tempMin | number:'1.0-0' }}°</span>
+        </div>
+      }
+    </div>
+
+  }
+</article>

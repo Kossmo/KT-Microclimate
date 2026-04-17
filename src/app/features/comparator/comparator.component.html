@@ -1,0 +1,39 @@
+<div class="comparator">
+  <header class="comparator-header">
+    <h1>Compare Cities</h1>
+    <div class="header-actions">
+      @if (state.cityCount() > 0) {
+        <button class="btn-clear" (click)="clearAll()">Clear all</button>
+      }
+    </div>
+  </header>
+
+  <div class="search-area">
+    <app-search-bar [inline]="true" (locationSelected)="onLocationSelected($event)" />
+    @if (!state.canAdd()) {
+      <p class="limit-msg">Maximum 6 cities reached</p>
+    }
+  </div>
+
+  @if (state.cityCount() === 0) {
+    <div class="empty-state">
+      <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="4" y="12" width="24" height="40" rx="4" fill="none" stroke="#a89279" stroke-width="2"/>
+        <rect x="36" y="12" width="24" height="40" rx="4" fill="none" stroke="#a89279" stroke-width="2"/>
+        <line x1="16" y1="24" x2="16" y2="40" stroke="#d4956a" stroke-width="2" stroke-linecap="round"/>
+        <line x1="48" y1="28" x2="48" y2="40" stroke="#5b8fad" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <h2>No cities yet</h2>
+      <p>Search for a city above, or <button class="link-btn" (click)="goToMap()">explore the map</button> and add cities from there.</p>
+    </div>
+  } @else {
+    <div class="city-grid">
+      @for (city of state.cities(); track city.id) {
+        <app-city-column
+          [city]="city"
+          (removed)="removeCity(city.id)"
+        />
+      }
+    </div>
+  }
+</div>

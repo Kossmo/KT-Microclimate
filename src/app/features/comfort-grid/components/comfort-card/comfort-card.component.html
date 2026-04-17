@@ -1,0 +1,64 @@
+<article class="comfort-card" [class.highlighted]="highlighted()">
+  @if (city().isLoading) {
+    <div class="card-loading">
+      <div class="loading-spinner"></div>
+    </div>
+  } @else if (city().error) {
+    <div class="card-error">
+      <span class="city-name">{{ city().location.name }}</span>
+      <span class="error-msg">{{ city().error }}</span>
+    </div>
+  } @else {
+    <button class="remove-btn" (click)="removed.emit()" aria-label="Remove city">&times;</button>
+
+    <div class="score-ring">
+      <svg width="76" height="76" viewBox="0 0 76 76">
+        <circle cx="38" cy="38" r="32" fill="none" stroke="#e0ddd5" stroke-width="4" />
+        <circle cx="38" cy="38" r="32" fill="none"
+          [attr.stroke]="scoreColor()"
+          stroke-width="4"
+          stroke-linecap="round"
+          [attr.stroke-dasharray]="arcPath().dashLength + ' ' + (arcPath().circumference - arcPath().dashLength)"
+          stroke-dashoffset="0"
+          transform="rotate(-90 38 38)"
+        />
+        <text x="38" y="34" text-anchor="middle" class="score-number" [attr.fill]="scoreColor()">
+          {{ city().score?.overall }}
+        </text>
+        <text x="38" y="46" text-anchor="middle" class="score-label">score</text>
+      </svg>
+    </div>
+
+    <div class="card-info">
+      <span class="rank">#{{ rank() }}</span>
+      <h3 class="city-name">{{ city().location.name }}</h3>
+      <span class="country">{{ city().location.country }}</span>
+    </div>
+
+    @if (currentWeather(); as weather) {
+      <div class="weather-summary">
+        <app-weather-icon [type]="weather.wmo.icon" [severity]="weather.wmo.severity" [size]="32" />
+        <span class="temp">{{ weather.tempMax | number:'1.0-0' }}°</span>
+      </div>
+    }
+
+    <div class="metrics">
+      @if (humidity() !== null) {
+        <div class="metric">
+          <span class="metric-value">{{ humidity() }}%</span>
+          <span class="metric-label">humidity</span>
+        </div>
+      }
+      <div class="metric">
+        <span class="metric-value">{{ currentWeather()?.windSpeedMax | number:'1.0-0' }}</span>
+        <span class="metric-label">km/h wind</span>
+      </div>
+      @if (uvIndex() !== null) {
+        <div class="metric">
+          <span class="metric-value">{{ uvIndex() }}</span>
+          <span class="metric-label">UV index</span>
+        </div>
+      }
+    </div>
+  }
+</article>

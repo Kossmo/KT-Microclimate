@@ -1,0 +1,42 @@
+// --- Organic / Nature palette ---
+$color-earth-dark:    #3b2f1e;
+$color-earth:         #6b5340;
+$color-earth-light:   #a89279;
+$color-sage:          #7a9e7e;
+$color-sage-dark:     #4a6b4e;
+$color-sky:           #7ba7bc;
+$color-sky-light:     #b5d4e0;
+$color-warm:          #d4956a;
+$color-cool:          #6a8fa8;
+$color-rain:          #5b8fad;
+$color-snow:          #c8d8e0;
+$color-storm:         #4a4a5a;
+$color-surface:       #f5f0e8;
+$color-surface-alt:   #ebe4d8;
+$color-panel:         #f5f0e8;
+
+// --- Typography ---
+$font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+$font-display: 'Playfair Display', Georgia, serif;
+
+// --- Spacing ---
+$space-xs: 4px;
+$space-sm: 8px;
+$space-md: 16px;
+$space-lg: 24px;
+$space-xl: 32px;
+$space-2xl: 48px;
+
+// --- Breakpoints ---
+$bp-mobile: 480px;
+$bp-tablet: 768px;
+$bp-desktop: 1024px;
+
+// --- Shadows ---
+$shadow-panel: 0 4px 24px rgba(59, 47, 30, 0.12);
+$shadow-card:  0 2px 8px rgba(59, 47, 30, 0.08);
+
+// --- Border radius ---
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 20px;

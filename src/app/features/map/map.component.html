@@ -1,0 +1,28 @@
+<div class="map-wrapper">
+  <div #mapEl class="map"></div>
+
+  <app-search-bar (locationSelected)="onLocationSelected($event)" />
+
+  @if (isLoading()) {
+    <div class="loading-indicator" role="status" aria-label="Loading forecast">
+      <div class="loading-spinner"></div>
+      <span>Loading forecast&hellip;</span>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="error-toast" role="alert">
+      <span>{{ error() }}</span>
+      <button (click)="error.set(null)" aria-label="Dismiss error">&times;</button>
+    </div>
+  }
+
+  @if (forecast(); as fc) {
+    <app-forecast-panel
+      [forecast]="fc"
+      [canAddToCompare]="comparatorState.canAdd()"
+      (closed)="closeForecast()"
+      (addToCompare)="addToCompare()"
+    />
+  }
+</div>

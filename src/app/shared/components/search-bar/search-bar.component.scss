@@ -1,0 +1,96 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.search-bar {
+  position: absolute;
+  top: $space-md;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  z-index: 15;
+
+  @include mobile {
+    width: calc(100% - #{$space-lg * 2});
+  }
+
+  &.inline {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    z-index: 20;
+  }
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: $color-earth-light;
+  pointer-events: none;
+}
+
+input {
+  width: 100%;
+  padding: $space-sm $space-md $space-sm 36px;
+  border: 1px solid rgba(168, 146, 121, 0.2);
+  border-radius: $radius-md;
+  background: $color-panel;
+  font-family: $font-primary;
+  font-size: 0.875rem;
+  color: $color-earth-dark;
+  box-shadow: $shadow-panel;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &::placeholder {
+    color: $color-earth-light;
+  }
+
+  &:focus {
+    border-color: $color-sage;
+    box-shadow: $shadow-panel, 0 0 0 3px rgba(122, 158, 126, 0.15);
+  }
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: $color-panel;
+  border-radius: $radius-sm;
+  box-shadow: $shadow-panel;
+  list-style: none;
+  overflow: hidden;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    padding: $space-sm $space-md;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:hover,
+    &.active {
+      background: $color-surface-alt;
+    }
+  }
+}
+
+.result-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $color-earth-dark;
+}
+
+.result-meta {
+  font-size: 0.75rem;
+  color: $color-earth-light;
+}

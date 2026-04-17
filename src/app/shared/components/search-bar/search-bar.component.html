@@ -1,0 +1,41 @@
+<div class="search-bar" [class.inline]="inline()" role="combobox" aria-expanded="isOpen()" aria-haspopup="listbox">
+  <div class="search-input-wrapper">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="10.5" y1="10.5" x2="15" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <input
+      type="text"
+      placeholder="Search a city..."
+      [value]="query()"
+      (input)="onInput($event)"
+      (keydown)="onKeydown($event)"
+      (focus)="results().length > 0 && isOpen.set(true)"
+      aria-label="Search for a city"
+      aria-autocomplete="list"
+      autocomplete="off"
+    />
+  </div>
+
+  @if (isOpen() && results().length > 0) {
+    <ul class="search-results" role="listbox">
+      @for (result of results(); track result.id; let i = $index) {
+        <li
+          role="option"
+          [class.active]="i === activeIndex()"
+          [attr.aria-selected]="i === activeIndex()"
+          (click)="selectResult(result)"
+          (mouseenter)="activeIndex.set(i)"
+        >
+          <span class="result-name">{{ result.name }}</span>
+          <span class="result-meta">
+            @if (result.admin1) {
+              {{ result.admin1 }},
+            }
+            {{ result.country }}
+          </span>
+        </li>
+      }
+    </ul>
+  }
+</div>

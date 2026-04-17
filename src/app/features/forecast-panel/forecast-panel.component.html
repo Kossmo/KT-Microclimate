@@ -1,0 +1,120 @@
+<aside class="forecast-panel" role="complementary" aria-label="Weather forecast">
+  <header class="panel-header">
+    <div class="header-info">
+      <h2>{{ locationLabel() }}</h2>
+      <p class="coordinates">{{ coordinates() }}</p>
+    </div>
+    <div class="header-actions">
+      @if (canAddToCompare()) {
+        <button class="compare-btn" (click)="addToCompare.emit()" aria-label="Add to comparator">
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+            <line x1="7" y1="2" x2="7" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="2" y1="7" x2="12" y2="7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Compare
+        </button>
+      }
+      <button class="close-btn" (click)="closed.emit()" aria-label="Close forecast panel">&times;</button>
+    </div>
+  </header>
+
+  @if (currentWeather(); as current) {
+    <section class="current-weather">
+      <app-weather-icon [type]="current.wmo.icon" [severity]="current.wmo.severity" [size]="56" />
+      <div class="current-details">
+        <span class="current-temp">{{ current.displayTemp }}°</span>
+        <span class="current-desc">{{ current.wmo.description }}</span>
+      </div>
+    </section>
+  }
+
+  <section class="daily-forecast" aria-label="7-day forecast">
+    <h3>7-Day Forecast</h3>
+    @for (day of forecast().days; track day.date; let i = $index) {
+      <app-daily-card
+        [day]="day"
+        [highlighted]="selectedDayIdx() === i"
+        (clicked)="selectDay(i)"
+      />
+      @if (selectedDayIdx() === i) {
+        <div class="hourly-expand" aria-label="Hourly detail">
+
+          <!-- Mode tabs -->
+          <div class="mode-tabs" role="tablist">
+            <button role="tab" class="mode-tab" [class.active]="hourlyMode() === 'temp'" (click)="setMode('temp')">
+              <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                <line x1="6" y1="1" x2="6" y2="7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="6" cy="9.5" r="2" fill="currentColor"/>
+              </svg>
+              Temp
+            </button>
+            <button role="tab" class="mode-tab" [class.active]="hourlyMode() === 'wind'" (click)="setMode('wind')">
+              <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                <path d="M1 4.5 Q5 3 8.5 4.5 Q10 5 10.5 4 Q11 3 10 2.5" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                <path d="M1 7 Q5 5.5 9 7 Q10.5 7.5 11 6.5" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+              </svg>
+              Wind
+            </button>
+            <button role="tab" class="mode-tab" [class.active]="hourlyMode() === 'rain'" (click)="setMode('rain')">
+              <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                <path d="M6 1 Q8 4 8 6 A2 2 0 0 1 4 6 Q4 4 6 1Z" fill="currentColor" opacity="0.85"/>
+              </svg>
+              Rain
+            </button>
+          </div>
+
+          <!-- Draggable cards strip -->
+          <div
+            class="cards-viewport"
+            [class.is-dragging]="isDragging()"
+            (pointerdown)="onDragStart($event)"
+            (pointermove)="onDragMove($event)"
+            (pointerup)="onDragEnd()"
+            (pointercancel)="onDragEnd()"
+          >
+            <div class="cards-strip" [style.transform]="'translateX(' + dragOffset() + 'px)'">
+              @for (entry of hourlyEntries(); track entry.timeLabel) {
+                <div class="hour-card" [class.night]="entry.isNight">
+                  <span class="card-time">{{ entry.timeLabel }}</span>
+
+                  @switch (hourlyMode()) {
+                    @case ('temp') {
+                      <div class="card-visual">
+                        <app-weather-icon [type]="entry.icon" [severity]="entry.severity" [size]="28" [isNight]="entry.isNight" />
+                      </div>
+                      <span class="card-value">{{ entry.temp }}°</span>
+                    }
+                    @case ('wind') {
+                      <div class="card-visual">
+                        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" class="wind-dir-arrow"
+                          [style.transform]="'rotate(' + entry.windDirection + 'deg)'">
+                          <line x1="11" y1="19" x2="11" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                          <polyline points="6,11 11,4 16,11" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                        </svg>
+                      </div>
+                      <span class="card-value wind">{{ entry.windSpeed }}</span>
+                      <span class="card-unit">km/h</span>
+                    }
+                    @case ('rain') {
+                      <div class="card-visual rain-visual">
+                        <div class="rain-bar-track">
+                          <div class="rain-bar-fill" [style.height.%]="entry.precipPercent" [class.has-rain]="entry.precipitation > 0"></div>
+                        </div>
+                      </div>
+                      <span class="card-value rain">{{ entry.precipitation | number:'1.0-1' }}</span>
+                      <span class="card-unit">mm</span>
+                    }
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Right edge fade hint -->
+            <div class="edge-fade" aria-hidden="true"></div>
+          </div>
+
+        </div>
+      }
+    }
+  </section>
+</aside>

@@ -1,0 +1,75 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.comfort-grid-page {
+  width: 100%;
+  min-height: 100vh;
+  background: $color-surface;
+  padding: $space-lg;
+  padding-top: 72px;
+
+  @include mobile {
+    padding: $space-md;
+    padding-top: $space-lg;
+    padding-bottom: 80px;
+  }
+}
+
+.page-header {
+  margin-bottom: $space-lg;
+
+  h1 {
+    font-family: $font-display;
+    font-size: 1.75rem;
+    color: $color-earth-dark;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    color: $color-earth-light;
+    margin-top: 2px;
+  }
+}
+
+.search-area {
+  max-width: 400px;
+  margin: 0 auto $space-xl;
+}
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-sm;
+  padding: $space-2xl;
+  color: $color-earth-light;
+  font-size: 0.9rem;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid $color-earth-light;
+  border-top-color: $color-sage-dark;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $space-md;
+
+  app-comfort-card {
+    width: 240px;
+
+    @include mobile {
+      width: calc(50% - #{$space-sm});
+    }
+  }
+}

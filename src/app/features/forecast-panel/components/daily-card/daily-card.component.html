@@ -1,0 +1,30 @@
+<article class="daily-card" [class.highlighted]="highlighted()" (click)="clicked.emit()" role="button">
+  <div class="day-info">
+    <span class="day-name">{{ dayName() }}</span>
+    <span class="day-date">{{ dateLabel() }}</span>
+  </div>
+
+  <app-weather-icon
+    [type]="wmoInfo().icon"
+    [severity]="wmoInfo().severity"
+    [size]="36"
+  />
+
+  <div class="temp-range">
+    <span class="temp-max">{{ day().tempMax | number:'1.0-0' }}°</span>
+    <span class="temp-min">{{ day().tempMin | number:'1.0-0' }}°</span>
+  </div>
+
+  <div class="details">
+    @if (day().precipitation > 0) {
+      <span class="precipitation">
+        <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="3" fill="#5b8fad"/></svg>
+        {{ day().precipitation }} mm
+      </span>
+    }
+    <span class="wind">
+      <svg width="10" height="10" viewBox="0 0 10 10"><path d="M1 5h7M6 3l2 2-2 2" stroke="#a89279" fill="none" stroke-width="1.2"/></svg>
+      {{ day().windSpeedMax | number:'1.0-0' }} km/h
+    </span>
+  </div>
+</article>

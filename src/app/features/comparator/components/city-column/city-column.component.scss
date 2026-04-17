@@ -1,0 +1,219 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
+.city-card {
+  background: $color-panel;
+  border-radius: $radius-md;
+  box-shadow: $shadow-card;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+// --- Top section (name + current weather) ---
+
+.card-top {
+  padding: $space-md $space-md $space-sm;
+}
+
+.city-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: $space-sm;
+  margin-bottom: $space-sm;
+}
+
+.city-info { flex: 1; min-width: 0; }
+
+.city-name {
+  font-family: $font-display;
+  font-size: 1.35rem;
+  color: $color-earth-dark;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.city-sub {
+  font-size: 0.75rem;
+  color: $color-earth-light;
+  display: block;
+  margin-top: 1px;
+}
+
+.remove-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: $color-earth-light;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: $radius-sm;
+  line-height: 0;
+  transition: color 0.2s, background 0.2s;
+
+  &:hover {
+    color: $color-earth-dark;
+    background: rgba(0, 0, 0, 0.05);
+  }
+}
+
+// --- Current weather row ---
+
+.current-weather {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  padding: $space-xs 0;
+}
+
+.temp-block {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.big-temp {
+  font-family: $font-display;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: $color-earth-dark;
+  line-height: 1;
+}
+
+.weather-desc {
+  font-size: 0.8rem;
+  color: $color-earth;
+  margin-top: 3px;
+  white-space: nowrap;
+}
+
+// --- Quick stats ---
+
+.quick-stats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: flex-end;
+  margin-left: auto;
+}
+
+.qs-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82rem;
+  color: $color-earth;
+  font-variant-numeric: tabular-nums;
+}
+
+.qs-icon {
+  color: $color-earth-light;
+  flex-shrink: 0;
+}
+
+.qs-value { line-height: 1; }
+
+.qs-unit {
+  font-size: 0.72rem;
+  color: $color-earth-light;
+}
+
+// --- Temperature chart ---
+
+.card-chart {
+  padding: 0 $space-sm;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+
+  @include mobile {
+    display: none;
+  }
+}
+
+// --- 7-day strip ---
+
+.card-days {
+  display: flex;
+  gap: 2px;
+  padding: $space-sm $space-sm $space-md;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.day-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 4px;
+  border-radius: $radius-sm;
+  background: $color-surface;
+  flex: 1;
+  min-width: 42px;
+  transition: background 0.15s;
+
+  &:hover { background: $color-surface-alt; }
+}
+
+.day-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: $color-earth;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.day-high {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: $color-earth-dark;
+  font-variant-numeric: tabular-nums;
+}
+
+.day-low {
+  font-size: 0.75rem;
+  color: $color-earth-light;
+  font-variant-numeric: tabular-nums;
+}
+
+// --- Loading / Error ---
+
+.card-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-sm;
+  padding: $space-2xl $space-lg;
+  color: $color-earth-light;
+  font-size: 0.875rem;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba($color-earth-light, 0.3);
+  border-top-color: $color-sage-dark;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.card-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-lg;
+  color: #8b3a2a;
+  font-size: 0.875rem;
+  gap: $space-sm;
+}

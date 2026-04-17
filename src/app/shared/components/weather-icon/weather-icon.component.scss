@@ -1,0 +1,132 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Sun rays rotation
+.sun-rays {
+  animation: rotate-slow 20s linear infinite;
+}
+
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+// Cloud horizontal drift
+.cloud-drift {
+  animation: drift 4s ease-in-out infinite;
+}
+
+.cloud-drift-slow {
+  animation: drift-slow 6s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(4px); }
+}
+
+@keyframes drift-slow {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(2px); }
+}
+
+// Fog lines fade
+.fog-line {
+  animation: fog-pulse 3s ease-in-out infinite;
+}
+
+.fog-line-2 { animation-delay: 0.5s; }
+.fog-line-3 { animation-delay: 1s; }
+
+@keyframes fog-pulse {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+
+// Falling drops (drizzle)
+.drop {
+  animation: fall-drop 1.8s ease-in infinite;
+}
+
+.drop-1 { animation-delay: 0s; }
+.drop-2 { animation-delay: 0.4s; }
+.drop-3 { animation-delay: 0.8s; }
+.drop-4 { animation-delay: 0.2s; }
+.drop-5 { animation-delay: 0.6s; }
+
+@keyframes fall-drop {
+  0%   { transform: translateY(-6px); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateY(14px); opacity: 0; }
+}
+
+// Rain lines
+.rain-line {
+  animation: fall-rain 1.2s ease-in infinite;
+}
+
+.rain-line-1 { animation-delay: 0s; }
+.rain-line-2 { animation-delay: 0.3s; }
+.rain-line-3 { animation-delay: 0.6s; }
+.rain-line-4 { animation-delay: 0.15s; }
+.rain-line-5 { animation-delay: 0.45s; }
+
+@keyframes fall-rain {
+  0%   { transform: translateY(-8px); opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translateY(10px); opacity: 0; }
+}
+
+// Snowflakes drifting
+.snowflake {
+  animation: snow-fall 3s ease-in-out infinite;
+}
+
+.snowflake-1 { animation-delay: 0s; }
+.snowflake-2 { animation-delay: 0.7s; }
+.snowflake-3 { animation-delay: 1.4s; }
+.snowflake-4 { animation-delay: 0.3s; }
+.snowflake-5 { animation-delay: 1s; }
+
+@keyframes snow-fall {
+  0%   { transform: translate(0, -6px); opacity: 0; }
+  15%  { opacity: 1; }
+  50%  { transform: translate(4px, 6px); opacity: 0.8; }
+  100% { transform: translate(-2px, 14px); opacity: 0; }
+}
+
+// Lightning flash
+.lightning {
+  animation: lightning-flash 3s ease-in-out infinite;
+}
+
+@keyframes lightning-flash {
+  0%, 15%, 25%, 100% { opacity: 0; }
+  8%, 10%            { opacity: 1; }
+  18%, 20%           { opacity: 0.9; }
+}
+
+// Moon soft glow pulse
+.moon-glow {
+  animation: moon-pulse 4s ease-in-out infinite;
+}
+
+@keyframes moon-pulse {
+  0%, 100% { opacity: 0.9; }
+  50%      { opacity: 1; }
+}
+
+// Ice crystal shimmer
+.crystal {
+  animation: crystal-shimmer 2.5s ease-in-out infinite;
+}
+
+.crystal-2 { animation-delay: 0.8s; }
+
+@keyframes crystal-shimmer {
+  0%, 100% { opacity: 0.5; transform: scale(0.8); }
+  50%      { opacity: 1; transform: scale(1); }
+}

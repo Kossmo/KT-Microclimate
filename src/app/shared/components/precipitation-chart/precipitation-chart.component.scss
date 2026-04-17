@@ -1,0 +1,45 @@
+:host {
+  display: block;
+}
+
+.chart-container {
+  padding: 0;
+}
+
+.chart-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #6b5340;
+  margin-bottom: 6px;
+}
+
+svg {
+  width: 100%;
+  height: auto;
+}
+
+.bar-group {
+  cursor: pointer;
+
+  rect {
+    transition: fill-opacity 0.2s;
+  }
+
+  &:hover rect {
+    fill-opacity: 1 !important;
+  }
+}
+
+.axis-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  fill: #a89279;
+}
+
+.bar-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  fill: #5b8fad;
+  font-weight: 600;
+}

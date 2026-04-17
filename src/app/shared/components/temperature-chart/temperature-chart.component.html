@@ -1,0 +1,54 @@
+<div class="chart-container">
+  <h3 class="chart-title">Temperature</h3>
+  <svg [attr.viewBox]="viewBox" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Temperature chart" class="clickable-chart" (click)="onChartClick($event)">
+    <title>Hourly temperature chart</title>
+
+    <defs>
+      <linearGradient id="tempGradient" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--color-warm, #d4956a)" stop-opacity="0.25" />
+        <stop offset="100%" stop-color="var(--color-warm, #d4956a)" stop-opacity="0.02" />
+      </linearGradient>
+    </defs>
+
+    <!-- Clickable background -->
+    <rect [attr.x]="padding" [attr.y]="padding" [attr.width]="width - 2 * padding" [attr.height]="height - 2 * padding" fill="transparent" />
+
+    <!-- Grid lines -->
+    @for (label of yLabels(); track label.label) {
+      <line
+        [attr.x1]="padding" [attr.y1]="label.y"
+        [attr.x2]="width - padding" [attr.y2]="label.y"
+        stroke="#e0ddd5" stroke-width="0.5" stroke-dasharray="4 4"
+      />
+      <text [attr.x]="padding - 8" [attr.y]="label.y + 4" text-anchor="end" class="axis-label">
+        {{ label.label }}
+      </text>
+    }
+
+    <!-- Area fill -->
+    <path [attr.d]="areaPath()" fill="url(#tempGradient)" />
+
+    <!-- Line -->
+    <path [attr.d]="linePath()" fill="none" stroke="#d4956a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Timeline highlight -->
+    @if (highlightPoint(); as hp) {
+      <line
+        [attr.x1]="hp.x" [attr.y1]="padding"
+        [attr.x2]="hp.x" [attr.y2]="height - padding"
+        stroke="#4a6b4e" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"
+      />
+      <circle [attr.cx]="hp.x" [attr.cy]="hp.y" r="5" fill="#4a6b4e" stroke="white" stroke-width="2" />
+      <text [attr.x]="hp.x" [attr.y]="hp.y - 12" text-anchor="middle" class="highlight-label">
+        {{ hp.temp }}°
+      </text>
+    }
+
+    <!-- Day labels -->
+    @for (label of dayLabels(); track label.label) {
+      <text [attr.x]="label.x" [attr.y]="height - padding + 20" text-anchor="middle" class="axis-label">
+        {{ label.label }}
+      </text>
+    }
+  </svg>
+</div>

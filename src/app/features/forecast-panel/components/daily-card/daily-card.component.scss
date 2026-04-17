@@ -1,0 +1,72 @@
+@use '../../../../../styles/variables' as *;
+
+.daily-card {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  padding: $space-sm $space-md;
+  border-radius: $space-sm;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  &.highlighted {
+    background: rgba(74, 107, 78, 0.08);
+    border-left: 3px solid $color-sage-dark;
+  }
+}
+
+.day-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 48px;
+}
+
+.day-name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: $color-earth-dark;
+}
+
+.day-date {
+  font-size: 0.7rem;
+  color: $color-earth-light;
+}
+
+.temp-range {
+  display: flex;
+  gap: $space-sm;
+  min-width: 72px;
+}
+
+.temp-max {
+  font-weight: 600;
+  color: $color-warm;
+  font-size: 0.9rem;
+}
+
+.temp-min {
+  color: $color-cool;
+  font-size: 0.9rem;
+}
+
+.details {
+  display: flex;
+  gap: $space-md;
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: $color-earth-light;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+}
+
+.precipitation {
+  color: $color-rain;
+}
