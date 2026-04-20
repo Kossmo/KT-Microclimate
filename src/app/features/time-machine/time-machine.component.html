@@ -1,0 +1,104 @@
+<div class="time-machine">
+  <header class="tm-header">
+    <h1 class="tm-title">Time Machine</h1>
+    <p class="tm-tagline">Step back to any day since 1940 — discover the weather of a moment in history.</p>
+  </header>
+
+  @if (!result()) {
+    <div class="tm-form">
+      <div class="tm-inputs">
+        <div class="tm-field">
+          <label class="tm-label" for="tm-date">Date</label>
+          <input
+            id="tm-date"
+            class="tm-date-input"
+            type="date"
+            [min]="minDate"
+            [max]="maxDate"
+            [value]="selectedDate()"
+            (change)="onDateChange($event)"
+            aria-label="Select a historical date"
+          />
+          <p class="tm-hint">From January 1940 · up to 7 days ago</p>
+        </div>
+        <div class="tm-field">
+          <label class="tm-label">Location</label>
+          <app-search-bar [inline]="true" (locationSelected)="onLocationSelected($event)" />
+        </div>
+      </div>
+
+      @if (error()) {
+        <p class="tm-error" role="alert">{{ error() }}</p>
+      }
+
+      <button
+        class="tm-cta"
+        [disabled]="!canSearch() || loading()"
+        (click)="search()"
+        aria-label="Fetch historical weather"
+      >
+        @if (loading()) {
+          <span class="tm-spinner" aria-hidden="true"></span>
+          Traveling...
+        } @else {
+          Take me back
+        }
+      </button>
+    </div>
+  } @else {
+    <div class="tm-result">
+      <div class="postcard">
+        <div class="postcard__header">
+          <div class="postcard__date">{{ formattedDate() }}</div>
+          <div class="postcard__location">{{ result()!.location.name }}</div>
+        </div>
+
+        <div class="postcard__main">
+          <app-weather-icon
+            [type]="weatherInfo()!.icon"
+            [severity]="weatherInfo()!.severity"
+            [size]="72"
+          />
+          <div class="postcard__temp-block">
+            <span class="postcard__temp-max">{{ result()!.tempMax | number:'1.0-0' }}°</span>
+            <span class="postcard__temp-sep">/</span>
+            <span class="postcard__temp-min">{{ result()!.tempMin | number:'1.0-0' }}°</span>
+          </div>
+          <p class="postcard__condition">{{ weatherInfo()!.description }}</p>
+        </div>
+
+        <div class="postcard__stats" role="list" aria-label="Weather statistics">
+          <div class="stat" role="listitem">
+            <span class="stat__label">Precipitation</span>
+            <span class="stat__value">{{ result()!.precipitation | number:'1.1-1' }} mm</span>
+          </div>
+          <div class="stat" role="listitem">
+            <span class="stat__label">Max wind</span>
+            <span class="stat__value">{{ result()!.windSpeedMax | number:'1.0-0' }} km/h</span>
+          </div>
+          <div class="stat" role="listitem">
+            <span class="stat__label">Sunrise</span>
+            <span class="stat__value">{{ formattedSunrise() }}</span>
+          </div>
+          <div class="stat" role="listitem">
+            <span class="stat__label">Sunset</span>
+            <span class="stat__value">{{ formattedSunset() }}</span>
+          </div>
+        </div>
+
+        @if (result()!.hourlyTemperatures.length > 0) {
+          <div class="postcard__chart">
+            <p class="postcard__chart-label">Temperature throughout the day</p>
+            <app-temperature-chart
+              [temperatures]="result()!.hourlyTemperatures"
+              [times]="result()!.hourlyTimes"
+              [highlightIndex]="null"
+            />
+          </div>
+        }
+      </div>
+
+      <button class="tm-back" (click)="reset()">← Try another day</button>
+    </div>
+  }
+</div>

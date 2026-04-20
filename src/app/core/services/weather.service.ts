@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of, map, tap } from 'rxjs';
 
 import { CacheService } from './cache.service';
-import { ForecastResponse, Forecast, ExtendedForecast, DayForecast } from '../models/weather.model';
+import { ForecastResponse, Forecast, ExtendedForecast, DayForecast, ArchiveResponse, HistoricalWeather } from '../models/weather.model';
 import { GeoLocation } from '../models/location.model';
 
 @Injectable({ providedIn: 'root' })
@@ -11,6 +11,7 @@ export class WeatherService {
   private readonly http = inject(HttpClient);
   private readonly cache = inject(CacheService);
   private readonly BASE_URL = 'https://api.open-meteo.com/v1/forecast';
+  private readonly ARCHIVE_URL = 'https://archive-api.open-meteo.com/v1/archive';
 
   getForecast(lat: number, lon: number, locationName?: string): Observable<Forecast> {
     const latStr = lat.toFixed(4);
@@ -52,6 +53,64 @@ export class WeatherService {
       map(res => this.transformExtendedResponse(res, lat, lon, locationName)),
       tap(forecast => this.cache.set(key, forecast)),
     );
+  }
+
+  getHistoricalWeather(lat: number, lon: number, date: string, locationName?: string): Observable<HistoricalWeather> {
+    const latStr = lat.toFixed(4);
+    const lonStr = lon.toFixed(4);
+    const key = `archive:${latStr}:${lonStr}:${date}`;
+    const cached = this.cache.get<HistoricalWeather>(key);
+    if (cached) return of(cached);
+
+    const params = new HttpParams()
+      .set('latitude', latStr)
+      .set('longitude', lonStr)
+      .set('start_date', date)
+      .set('end_date', date)
+      .set('daily', 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,sunrise,sunset')
+      .set('hourly', 'temperature_2m')
+      .set('timezone', 'auto');
+
+    return this.http.get<ArchiveResponse>(this.ARCHIVE_URL, { params }).pipe(
+      map(res => this.transformArchiveResponse(res, lat, lon, date, locationName)),
+      tap(data => this.cache.set(key, data)),
+    );
+  }
+
+  private transformArchiveResponse(
+    res: ArchiveResponse,
+    lat: number,
+    lon: number,
+    date: string,
+    locationName?: string,
+  ): HistoricalWeather {
+    const location: GeoLocation = {
+      latitude: lat,
+      longitude: lon,
+      name: locationName,
+      timezone: res.timezone,
+    };
+
+    const i = Math.max(0, res.daily.time.findIndex(t => t === date));
+    const firstHour = res.hourly.time.findIndex(t => t.startsWith(date));
+    const hourlyTimes = res.hourly.time.filter(t => t.startsWith(date));
+    const hourlyTemperatures = firstHour >= 0
+      ? res.hourly.temperature_2m.slice(firstHour, firstHour + hourlyTimes.length)
+      : [];
+
+    return {
+      date,
+      location,
+      tempMax: res.daily.temperature_2m_max[i],
+      tempMin: res.daily.temperature_2m_min[i],
+      precipitation: res.daily.precipitation_sum[i],
+      weatherCode: res.daily.weather_code[i],
+      windSpeedMax: res.daily.wind_speed_10m_max[i],
+      sunrise: res.daily.sunrise[i],
+      sunset: res.daily.sunset[i],
+      hourlyTemperatures,
+      hourlyTimes,
+    };
   }
 
   private transformExtendedResponse(

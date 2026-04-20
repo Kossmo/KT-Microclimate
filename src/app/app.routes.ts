@@ -17,6 +17,10 @@ export const routes: Routes = [
         path: 'comfort',
         loadComponent: () => import('./features/comfort-grid/comfort-grid.component').then(m => m.ComfortGridComponent),
       },
+      {
+        path: 'timemachine',
+        loadComponent: () => import('./features/time-machine/time-machine.component').then(m => m.TimeMachineComponent),
+      },
     ],
   },
 ];

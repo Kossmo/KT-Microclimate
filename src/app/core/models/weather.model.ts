@@ -59,3 +59,37 @@ export interface DayForecast {
   sunset: string;
   windSpeedMax: number;
 }
+
+export interface ArchiveResponse {
+  latitude: number;
+  longitude: number;
+  timezone: string;
+  daily: {
+    time: string[];
+    temperature_2m_max: number[];
+    temperature_2m_min: number[];
+    precipitation_sum: number[];
+    weather_code: number[];
+    sunrise: string[];
+    sunset: string[];
+    wind_speed_10m_max: number[];
+  };
+  hourly: {
+    time: string[];
+    temperature_2m: number[];
+  };
+}
+
+export interface HistoricalWeather {
+  date: string;
+  location: GeoLocation;
+  tempMax: number;
+  tempMin: number;
+  precipitation: number;
+  weatherCode: number;
+  windSpeedMax: number;
+  sunrise: string;
+  sunset: string;
+  hourlyTemperatures: number[];
+  hourlyTimes: string[];
+}

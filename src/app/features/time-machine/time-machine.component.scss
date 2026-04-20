@@ -1,0 +1,331 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.time-machine {
+  width: 100%;
+  min-height: 100vh;
+  background: $color-surface;
+  padding: 80px $space-lg $space-xl;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @include mobile {
+    padding: $space-xl $space-md 96px;
+  }
+}
+
+// --- Header ---
+
+.tm-header {
+  text-align: center;
+  margin-bottom: $space-2xl;
+  width: 100%;
+  max-width: 480px;
+}
+
+.tm-title {
+  font-family: $font-display;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $color-earth-dark;
+  margin: 0 0 4px;
+
+  @include mobile {
+    font-size: 1.4rem;
+  }
+}
+
+.tm-tagline {
+  font-family: $font-primary;
+  font-size: 0.9rem;
+  color: $color-earth-light;
+  margin: 0;
+  line-height: 1.6;
+}
+
+// --- Form card ---
+
+.tm-form {
+  width: 100%;
+  max-width: 480px;
+  background: $color-panel;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-panel;
+  padding: $space-xl;
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+}
+
+.tm-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+}
+
+.tm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tm-label {
+  font-family: $font-primary;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $color-earth-light;
+}
+
+.tm-date-input {
+  width: 100%;
+  padding: $space-sm $space-md;
+  border: 1px solid rgba(168, 146, 121, 0.2);
+  border-radius: $radius-md;
+  background: $color-panel;
+  font-family: $font-primary;
+  font-size: 0.875rem;
+  color: $color-earth-dark;
+  box-shadow: $shadow-panel;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: $color-sage;
+    box-shadow: $shadow-panel, 0 0 0 3px rgba(122, 158, 126, 0.15);
+  }
+}
+
+.tm-hint {
+  font-family: $font-primary;
+  font-size: 0.72rem;
+  color: $color-earth-light;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.tm-error {
+  font-family: $font-primary;
+  font-size: 0.82rem;
+  color: #b05050;
+  padding: $space-sm $space-md;
+  background: rgba(176, 80, 80, 0.08);
+  border-radius: $radius-sm;
+  margin: 0;
+}
+
+.tm-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-sm;
+  padding: 12px $space-xl;
+  background: $color-sage;
+  border: none;
+  border-radius: $radius-md;
+  color: white;
+  font-family: $font-primary;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover:not(:disabled) {
+    background: $color-sage-dark;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.tm-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// --- Result ---
+
+.tm-result {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-lg;
+}
+
+// --- Postcard ---
+
+.postcard {
+  width: 100%;
+  background: $color-panel;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-panel;
+  overflow: hidden;
+
+  &__header {
+    padding: $space-lg $space-lg $space-md;
+    background: $color-surface-alt;
+    border-bottom: 1px solid rgba(168, 146, 121, 0.15);
+  }
+
+  &__date {
+    font-family: $font-display;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: $color-earth-dark;
+    margin-bottom: 2px;
+  }
+
+  &__location {
+    font-family: $font-primary;
+    font-size: 0.78rem;
+    color: $color-earth-light;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  &__main {
+    padding: $space-lg;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $space-md;
+  }
+
+  &__temp-block {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  &__temp-max {
+    font-family: $font-display;
+    font-size: 3rem;
+    font-weight: 700;
+    color: $color-earth-dark;
+    line-height: 1;
+  }
+
+  &__temp-sep {
+    font-family: $font-display;
+    font-size: 1.6rem;
+    color: $color-earth-light;
+    line-height: 1;
+  }
+
+  &__temp-min {
+    font-family: $font-display;
+    font-size: 1.6rem;
+    color: $color-earth-light;
+    line-height: 1;
+  }
+
+  &__condition {
+    width: 100%;
+    font-family: $font-primary;
+    font-size: 0.85rem;
+    color: $color-earth-light;
+    margin: 0;
+    padding-left: calc(72px + #{$space-md});
+
+    @include mobile {
+      padding-left: 0;
+    }
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid $color-surface-alt;
+    border-bottom: 1px solid $color-surface-alt;
+
+    @include mobile {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &__chart {
+    padding: $space-md $space-md $space-sm;
+  }
+
+  &__chart-label {
+    font-family: $font-primary;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $color-earth-light;
+    margin: 0 0 $space-sm;
+  }
+}
+
+.stat {
+  background: $color-panel;
+  padding: $space-md $space-sm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+
+  & + & {
+    border-left: 1px solid $color-surface-alt;
+  }
+
+  @include mobile {
+    &:nth-child(odd) { border-left: none; }
+    &:nth-child(3),
+    &:nth-child(4) { border-top: 1px solid $color-surface-alt; }
+  }
+
+  &__label {
+    font-family: $font-primary;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $color-earth-light;
+  }
+
+  &__value {
+    font-family: $font-primary;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $color-earth-dark;
+  }
+}
+
+// --- Back button ---
+
+.tm-back {
+  background: transparent;
+  border: 1px solid rgba(168, 146, 121, 0.3);
+  border-radius: $radius-md;
+  color: $color-earth-light;
+  font-family: $font-primary;
+  font-size: 0.85rem;
+  padding: 10px $space-lg;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+
+  &:hover {
+    border-color: $color-earth-light;
+    color: $color-earth;
+  }
+}
