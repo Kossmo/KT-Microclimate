@@ -22,6 +22,70 @@
     </svg>
     <span>Comfort</span>
   </a>
+
+  <div class="nav-separator"></div>
+
+  <button
+    class="info-btn"
+    [class.active]="infoOpen()"
+    (click)="toggleInfo()"
+    aria-label="About Microclimate"
+    [attr.aria-expanded]="infoOpen()"
+  >
+    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+      <circle cx="9" cy="9" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="9" cy="6" r="1" fill="currentColor"/>
+      <line x1="9" y1="8.5" x2="9" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
 </nav>
+
+@if (infoOpen()) {
+  <div class="info-backdrop" (click)="closeInfo()" aria-hidden="true"></div>
+
+  <div class="info-panel" role="dialog" aria-modal="true" aria-label="About Microclimate">
+    <button class="info-panel__close" (click)="closeInfo()" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+        <line x1="3" y1="3" x2="13" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="13" y1="3" x2="3" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <h2 class="info-panel__title">Microclimate</h2>
+    <p class="info-panel__subtitle">Weather, made sensory.</p>
+
+    <section class="info-panel__section">
+      <h3>How it works</h3>
+      <ul>
+        <li>
+          <strong>Explore</strong>
+          Click anywhere on the map to get a 7-day weather forecast. Use the search bar to jump to any city.
+        </li>
+        <li>
+          <strong>Compare</strong>
+          Add up to 6 cities to compare their weather side by side — temperature curves, humidity, wind.
+        </li>
+        <li>
+          <strong>Comfort</strong>
+          20 cities worldwide ranked by a comfort score combining temperature, humidity, wind & UV index.
+        </li>
+      </ul>
+    </section>
+
+    <section class="info-panel__section info-panel__credits">
+      <h3>Data & Credits</h3>
+      <p>
+        Weather forecasts by
+        <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>
+        — open source, no API key required.
+      </p>
+      <p>
+        Map tiles ©&nbsp;<a href="https://carto.com/attributions" target="_blank" rel="noopener">CartoDB</a>
+        &nbsp;·&nbsp;
+        Map data ©&nbsp;<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors.
+      </p>
+    </section>
+  </div>
+}
 
 <router-outlet />

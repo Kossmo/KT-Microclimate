@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 
 import { ComparatorStateService } from '../core/services/comparator-state.service';
@@ -12,4 +12,13 @@ import { ComparatorStateService } from '../core/services/comparator-state.servic
 })
 export class AppShellComponent {
   protected readonly comparatorState = inject(ComparatorStateService);
+  protected readonly infoOpen = signal(false);
+
+  protected toggleInfo(): void {
+    this.infoOpen.update(v => !v);
+  }
+
+  protected closeInfo(): void {
+    this.infoOpen.set(false);
+  }
 }

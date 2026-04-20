@@ -104,7 +104,7 @@ export class MapComponent implements OnDestroy {
       style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
       center: [2.35, 46.85],
       zoom: 4,
-      attributionControl: {},
+      attributionControl: false,
       dragRotate: false,
       renderWorldCopies: false,
     });

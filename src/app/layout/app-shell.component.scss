@@ -72,3 +72,162 @@
   font-size: 0.65rem;
   font-weight: 600;
 }
+
+.nav-separator {
+  width: 1px;
+  height: 20px;
+  background: $color-surface-alt;
+  margin: 0 2px;
+  align-self: center;
+}
+
+.info-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: $radius-sm;
+  background: transparent;
+  color: $color-earth-light;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: $color-surface-alt;
+    color: $color-earth;
+  }
+
+  &.active {
+    background: $color-surface-alt;
+    color: $color-earth;
+  }
+}
+
+.info-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+}
+
+.info-panel {
+  position: fixed;
+  top: $space-md;
+  left: $space-md;
+  z-index: 40;
+  width: 320px;
+  background: $color-panel;
+  border-radius: $radius-md;
+  box-shadow: $shadow-panel;
+  padding: $space-lg;
+
+  @include mobile {
+    top: auto;
+    bottom: calc($space-md + 56px + $space-sm);
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(320px, calc(100vw - 2 * $space-md));
+  }
+
+  &__close {
+    position: absolute;
+    top: $space-sm;
+    right: $space-sm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: $radius-sm;
+    background: transparent;
+    color: $color-earth-light;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+
+    &:hover {
+      background: $color-surface-alt;
+      color: $color-earth;
+    }
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: $color-earth-dark;
+    margin: 0 0 4px;
+  }
+
+  &__subtitle {
+    font-family: $font-primary;
+    font-size: 0.8rem;
+    color: $color-earth-light;
+    margin: 0 0 $space-md;
+    font-style: italic;
+  }
+
+  &__section {
+    margin-top: $space-md;
+
+    h3 {
+      font-family: $font-primary;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: $color-earth-light;
+      margin: 0 0 $space-sm;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: $space-sm;
+    }
+
+    li {
+      font-family: $font-primary;
+      font-size: 0.8rem;
+      color: $color-earth;
+      line-height: 1.5;
+
+      strong {
+        display: block;
+        color: $color-earth-dark;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+    }
+  }
+
+  &__credits {
+    padding-top: $space-md;
+    border-top: 1px solid $color-surface-alt;
+
+    p {
+      font-family: $font-primary;
+      font-size: 0.75rem;
+      color: $color-earth-light;
+      margin: 0 0 6px;
+      line-height: 1.5;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    a {
+      color: $color-sage-dark;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
