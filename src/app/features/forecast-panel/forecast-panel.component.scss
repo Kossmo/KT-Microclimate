@@ -14,13 +14,14 @@
   animation: slide-in-right 0.35s ease-out;
 
   @include mobile {
-    top: auto;
+    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     width: 100%;
-    height: 65vh;
-    border-radius: $radius-lg $radius-lg 0 0;
+    height: 100%;
+    border-radius: 0;
+    z-index: 35;
     animation: slide-in-bottom 0.35s ease-out;
   }
 }

@@ -39,11 +39,24 @@ export class MapComponent implements OnDestroy {
   private map: Map | null = null;
   private marker: Marker | null = null;
   private markerElement: HTMLDivElement | null = null;
+  private hasHistoryEntry = false;
+  private suppressPopstate = false;
 
   readonly selectedLocation = signal<GeoLocation | null>(null);
   readonly forecast = signal<Forecast | null>(null);
   readonly isLoading = signal(false);
   readonly error = signal<string | null>(null);
+
+  private readonly handlePopState = () => {
+    if (this.suppressPopstate) {
+      this.suppressPopstate = false;
+      return;
+    }
+    if (this.forecast()) {
+      this.hasHistoryEntry = false;
+      this.doCloseForecast();
+    }
+  };
 
   protected readonly markerWeatherCode = computed(() => {
     const fc = this.forecast();
@@ -54,7 +67,10 @@ export class MapComponent implements OnDestroy {
   });
 
   constructor() {
-    afterNextRender(() => this.initMap());
+    afterNextRender(() => {
+      this.initMap();
+      window.addEventListener('popstate', this.handlePopState);
+    });
 
     // Update marker icon when timeline changes
     effect(() => {
@@ -67,6 +83,7 @@ export class MapComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.map?.remove();
+    window.removeEventListener('popstate', this.handlePopState);
   }
 
   onLocationSelected(location: GeoLocation): void {
@@ -80,6 +97,15 @@ export class MapComponent implements OnDestroy {
   }
 
   closeForecast(): void {
+    if (this.hasHistoryEntry) {
+      this.suppressPopstate = true;
+      this.hasHistoryEntry = false;
+      history.back();
+    }
+    this.doCloseForecast();
+  }
+
+  private doCloseForecast(): void {
     this.forecast.set(null);
     this.selectedLocation.set(null);
     this.error.set(null);
@@ -151,6 +177,10 @@ export class MapComponent implements OnDestroy {
   }
 
   private loadForecast(lat: number, lon: number, name?: string): void {
+    if (!this.forecast()) {
+      history.pushState({ forecastPanel: true }, '', window.location.href);
+      this.hasHistoryEntry = true;
+    }
     this.isLoading.set(true);
     this.error.set(null);
     this.timeline.reset();
