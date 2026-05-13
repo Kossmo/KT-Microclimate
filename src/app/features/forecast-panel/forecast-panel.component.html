@@ -87,7 +87,7 @@
                     @case ('wind') {
                       <div class="card-visual">
                         <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" class="wind-dir-arrow"
-                          [style.transform]="'rotate(' + entry.windDirection + 'deg)'">
+                          [style.transform]="'rotate(' + (entry.windDirection + 180) + 'deg)'">
                           <line x1="11" y1="19" x2="11" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                           <polyline points="6,11 11,4 16,11" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
                         </svg>
